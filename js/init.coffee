@@ -7,6 +7,11 @@ game.init  = ->
 	game.ctx = game.canvas.getContext "2d"
 	game.canvas.width = game.width
 	game.canvas.height = game.height
-
 	game.resize()
+
+	window.addEventListener 'mousemove', (e) ->
+		game.mousePosition.set(e)
+		game.mouseX = game.mousePosition.x/game.scale
+		game.mouseY = game.mousePosition.y/game.scale
+
 	game.loop()

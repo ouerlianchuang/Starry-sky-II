@@ -7,6 +7,10 @@ game.init = function() {
   game.canvas.width = game.width;
   game.canvas.height = game.height;
   game.resize();
-  game.loop();
-  return game.Draw.rect(200, 200, 100, 100, 'green');
+  window.addEventListener('mousemove', function(e) {
+    game.mousePosition.set(e);
+    game.mouseX = game.mousePosition.x / game.scale;
+    return game.mouseY = game.mousePosition.y / game.scale;
+  });
+  return game.loop();
 };

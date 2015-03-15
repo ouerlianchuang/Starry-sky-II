@@ -1,4 +1,4 @@
 game.loop = ->
-	window.setTimeout game.loop,1000/60
-	game.update
-	game.render
+	window.requestAnimationFrame game.loop
+	game.update()
+	game.render()
