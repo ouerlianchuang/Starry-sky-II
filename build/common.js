@@ -1,3 +1,4 @@
+"use strict";
 var game;
 
 game = {
@@ -29,5 +30,8 @@ game = {
   openShield: false,
   quakeAllow: true,
   infiniteLife: false,
-  whiteLine: []
+  whiteLine: [],
+  buttonArray: [],
+  buttonMusicOnOFF: "false",
+  audio: {}
 };

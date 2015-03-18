@@ -1,2 +1,5 @@
+"use strict"
 game.update = ->
-	document.title = game.mouseX + '+' + game.mouseY + ""
+	game.target.x = game.mouseX
+	game.target.y = game.mouseY
+	game.target.update()

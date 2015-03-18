@@ -1,3 +1,4 @@
+"use strict"
 game =
     mouseX: 0
     mouseY: 0
@@ -37,5 +38,7 @@ game =
     infiniteLife: false #无限生命
 
     whiteLine: []
-
+    buttonArray: []
+    buttonMusicOnOFF: "false"
+    audio:{}
 

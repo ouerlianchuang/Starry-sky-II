@@ -1,3 +1,6 @@
+"use strict";
 game.update = function() {
-  return document.title = game.mouseX + '+' + game.mouseY;
+  game.target.x = game.mouseX;
+  game.target.y = game.mouseY;
+  return game.target.update();
 };

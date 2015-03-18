@@ -15,5 +15,5 @@ gulp.task("coffee",function(){
 		.pipe(gulp.dest("build"))
 })
 gulp.task("watch",function(){
-	gulp.watch(paths.script,['coffee']);
+	gulp.watch(paths.scripts,['coffee']);
 })
