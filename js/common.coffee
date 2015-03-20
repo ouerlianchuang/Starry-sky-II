@@ -37,8 +37,16 @@ game =
 
     infiniteLife: false #无限生命
 
-    whiteLine: []
-    buttonArray: []
-    buttonMusicOnOFF: "false"
-    audio:{}
+    whiteLine: [] #go世界状态下线条存储
+    buttonArray: [] # 按钮数组
+    audio: {} #声音数组
+
+
+    #能量指针旋转
+    energyGuidingRotate: false
+    energyGuidingRotateNum : -50
+
+
+
+
 

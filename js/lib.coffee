@@ -79,7 +79,6 @@ game.targetFn = (x,y) ->
     this.rot = 0
     this.spin  = false #旋转
     this.on_off = 'on'
-
     this.update = ->
         this.n++
         if this.on_off is 'on'
@@ -96,7 +95,6 @@ game.targetFn = (x,y) ->
         game.ctx.save()
         game.ctx.translate(this.x,this.y) # 圆心
         game.ctx.rotate(this.rot % 360 ) * Math.PI / 180
-
         game.ctx.drawImage(game.targetImage, 0, 0, 25, 24, -12.5, -12, 25, 24)
         game.ctx.restore()
         return
@@ -114,7 +112,7 @@ game.imageLoad = (array) ->
             console.log name + "图片加载错误"
             return
     return
-
+#声音载入
 game.audioLoad = (array) ->
     for i in [0..array.length-1]
         my_name = array[i]['name']
@@ -144,7 +142,23 @@ game.button = (x,y,w,h,state,image,name) ->
     this.music = false
     this.musicNum = 0
     return
-
+#go世界状态里的线条
+game.line = ->
+    this.type = 'go'
+    this.x = 0
+    this.y = parseInt Math.random() * 620
+    this.r = parseInt Math.random() * 1.5
+    this.opacity = 1
+    this.fade = 0.05
+    this.remove = false
+    this.update = ->
+        this.opacity -= this.fade
+        this.remove = if this.opacity < 0 then true else false
+        return
+    this.render = ->
+        game.Draw.rect this.x, this.y, 820, this.r, 'rgba(82,139,139,' + this.opacity + ')'
+        return
+    return
 
 window.addEventListener('load',game.init,false);
 window.addEventListener('resize',game.resize,false);
