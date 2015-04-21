@@ -80,6 +80,7 @@ game.drawFrame = ->
     game.ctx.drawImage game.energyTankImage, 0, 0, 200, 31, 635, 590, 200, 31
     game.ctx.drawImage game.energyTankUpImage, 0, 0
     game.ctx.drawImage game.energyStationImage, 720, 548
+    game.Draw.semiCircle 100, 100, 50, 'red', game.energyValue/800   #能量半圆条的绘制
     #指针旋转
     if game.energyGuidingRotate is false
         game.energyGuidingRotateNum += 2
@@ -93,7 +94,7 @@ game.drawFrame = ->
     game.ctx.translate 781, 608  #圆心
     game.ctx.rotate game.energyGuidingRotateNum % 360 * Math.PI / 180 #旋转角度
     game.ctx.drawImage game.energyGuidingImage, 0, 0, 16, 40, -8, -40, 16, 40
-    game. ctx.restore();
+    game. ctx.restore()
     #游戏边框
     game.ctx.drawImage game.gameFrameImage, 0 , 0, 820, 620, 0, 0, 820, 620
     return
@@ -210,18 +211,21 @@ game.hero = (x,y,w,h,shield) ->
     this.sx = 0
     this.rotate = 0 # 旋转
     this.update = ->
+
         if this.shield is 'shield_one'
             if this.rotate % 3 is 0
                 this.sx += 115
             this.rotate++
-            if this.sx is 690
+            if this.sx >= 690
                 this.sx = 0
 
         if this.shield is 'shield_two'
             if this.rotate % 7 is 0
                 this.sx += 86
             this.rotate++
-        if this.sx is 344
+            if this.sx >= 344
+                this.sx = 0
+        if this.shield is 'initial'
             this.sx = 0
         return
     return
@@ -231,28 +235,28 @@ game.hero.prototype.Draw = (ctx,rot) ->
     if this.shield is 'initial' or this.shield is 'radar'
         this.image = game.heroImage
     if this.shield is 'shield_one'
-        this.image = game.heroImage_one
+        this.image = game.heroImage_shield_one
     if this.shield is 'shield_two'
-        this.image = game.heroImage_two
+        this.image = game.heroImage_shield_two
     ctx.translate this.x, this.y
     ctx.rotate this.rotation
 
     if this.shield is 'shield_one'
         this.w = 115
         this.h = 115
-        ctx.drawImage this.image, this.sx , 0 , this.w , this.h, -this.w/2, -this.h/2, this.w ,this.h
+        ctx.drawImage this.image, this.sx , 0 , 115 , 115, -115/2, -115/2, 115 ,115
     else if this.shield is 'shield_two'
         this.w = 86
         this.h = 115
-        ctx.drawImage this.image, this.sx , 0 , this.w , this.h, -this.w/2, -this.h/2, this.w ,this.h
+        ctx.drawImage this.image, this.sx , 0 , 86 , 115, -86/2, -115/2, 86, 115
     else
         if this.shield is 'radar'
-            this.w = this.w
-            this.h = this.h
+            this.w = 66
+            this.h = 66
         else
             this.w = 66
             this.h = 66
-        ctx.drawImage this.image, -this.w/2, -this.h/2, this.w, this.h
+        ctx.drawImage this.image, -66/2, -66/2, 66, 66
     ctx.restore()
     return
 #火焰🔥
@@ -294,9 +298,92 @@ game.scores = (num)->
     for i in [0..game.scores_view.length-1]
         game.ctx.drawImage game.scoresImage, 0 + 17 * game.scores_view.charAt(i), 0, 17, 25 ,35 + 17 * i, 29, 17, 25
     return
+#能量
+game.energyText = (x,y)->
+    this.x = x
+    this.y = y
+    this.remove = false
+    this.size = 0.1
+    this.dir = if Math.random() * 2 > 1 then 1 else -1
+    this.vx = Math.random() * 4 * this.dir
+    this.vy = Math.random() * 7
+    this.update = ->
+        this.x += this.vx
+        this.y += this.vy
+        this.vx *= 0.99
+        this.vy *= 0.99
+        this.vy -= 0.1
+        if this.y < 0
+            this.remove = true
+        return
+    this.render = ->
+        game.Draw.text "能量＋1", this.x, this.y, 1, "rgba(47,79,79,1)"
+        return
+    return
+#颗粒 敌机爆炸后 爆出白色能量
+game.particle = (x,y,r)->
+    this.x = x
+    this.y = y
+    this.r = Math.random() * 2.5 + 0.5
+    this.dir = if Math.random() * 2 > 1 then 1 else -1
+    this.vx = Math.random() * 4 * this.dir
+    this.vy = Math.random() * 7
+    this.colRandomR = Math.round(Math.random() * 255)
+    this.colRandomG = Math.round(Math.random() * 255)
+    this.colRandomB = Math.round(Math.random() * 255)
+    this.col = "rgba(255,255,255,#{Math.random()})"
+    this.remove = false
+    this.update = ->
+        this.x += this.vx
+        this.y += this.vy
+        this.vx *= 0.99
+        this.vy *= 0.99
+        this.vy -= 0.15
+        if this.y < 0
+            this.remove = true
+        return
+    this.render = ->
+        game.Draw.circle this.x, this.y, this.r, this.col
+        return
+    return
+#宝石
+game.gems = (x,y,sx,sy) ->
+    this.w = 25
+    this.h = 25
+    this.dx = x - sx
+    this.dy = y - sy
+    this.rad = Math.atan2 this.dy, this.dx
+    this.x = x
+    this.y = y
+    this.rot = Math.floor Math.random() * 180
+    this.dir = if Math.random() * 2 > 1 then 1 else -1
+    this.vx = Math.random() * 4 * this.dir
+    this.vy = Math.random() * 7
+    this.remove = false
+    this.random =  Math.round(Math.random() * 5)
+    this.update = ->
+        this.x += this.vx
+        this.y += this.vy
+        this.vx *= 0.99
+        this.vy *= 0.99
+        this.x -= Math.cos(this.rad) * 6
+        this.y -= Math.sin(this.rad) * 6
+        if this.y < 0 or this.y > 620 or this.x < 0 or this.x > 820
+            this.remove = true
+        return
+    this.render = ->
+        game.ctx.save()
+        game.ctx.translate this.x, this.y
+        this.rot += this.random
+        game.ctx.rotate this.rot % 360 * Math.PI/180
+        game.ctx.drawImage game.gemsImage, 0 + 25 * this.random, 0, this.w, this.h, -25/2, -25/2, 25, 25
+        game. ctx.restore()
+        return
+    return
 #敌人
 game.enemy = (enemy) ->
     this.type = enemy
+    this.random = 0
     if this.type is 'one'
         this.image = game.enemyImage_one
         this.w = 103
@@ -304,6 +391,25 @@ game.enemy = (enemy) ->
         this.x = Math.random() * game.width
         this.y = game.height
         this.constant = this.x
+        this.life = 5
+    else if this.type is 'lv2seven'
+        this.image = game.enemyImage_seven_lv2
+        this.w = 164
+        this.h = 97
+        this.x = Math.random() * game.width
+        this.y = game.height
+        this.constant = this.x
+        this.life = 25
+    else if this.type is 'lv2eight'
+        if Math.random()*4 < 1
+            this.random = 6
+        this.image = game.enemyImage_eight_lv2
+        this.w = 118
+        this.h = 103
+        this.x = Math.random() * game.width
+        this.y = game.height
+        this.constant = this.x
+        this.life = 25
     else if this.type is 'two'
         this.image = game.enemyImage_two
         this.w = 59
@@ -311,21 +417,64 @@ game.enemy = (enemy) ->
         this.x = game.width
         this.y = Math.random() * game.height
         this.constant = this.y
-    this.life = 5
+        this.life = 5
+    else if this.type is 'lv2one'
+        if Math.random()*4 < 1
+            this.random = 5
+        this.image = game.enemyImage_one_lv2
+        this.w = 205
+        this.h = 132
+        this.x = game.width
+        this.y = Math.random() * (game.height-50)
+        this.constant = this.y
+        this.life = 20
+    else if this.type is 'lv2four'
+        if Math.random()*2 < 1
+            this.random = 5
+        this.image = game.enemyImage_four_lv2
+        this.w = 266
+        this.h = 86
+        this.x = game.width
+        this.y = Math.random() * (game.height-50)
+        this.constant = this.y
+        this.life = 25
+    else if this.type is 'lv2five'
+        if Math.random()*3 < 1
+            this.random = 5
+        this.image = game.enemyImage_five_lv2
+        this.w = 277
+        this.h = 82
+        this.x = game.width
+        this.y = Math.random() * (game.height-50)
+        this.constant = this.y
+        this.life = 25
+    else if this.type is 'lv2two'
+        this.image = game.enemyImage_two_lv2
+        this.w = 232
+        this.h = 144
+        this.x = game.width
+        this.y = Math.random() * (game.height-50)
+        this.constant = this.y
+        this.life = 20
+        if Math.random()*4 < 1
+            this.random = 5
+            this.image = game.enemyImage_three_lv2
+            this.w = 239
+            this.h = 60
     this.r = Math.random() * 25 + 5
     this.speedScope = Math.random() * 3 + 1
-    this.speed =  game.enemySpeed + this.speedScope
+    this.speed =  game.enemySpeed + this.speedScope + this.random
     this.waveSize = 60
     this.remove = false
     this.update = ->
         time = new Date().getTime()*0.002
-        if this.type is 'one'
+        if this.type is 'one' or this.type is 'lv2seven' or this.type is 'lv2eight'
             this.y -= this.speed
             this.x = this.waveSize * Math.sin(time) + this.constant
-        else if this.type is 'two'
+        else if this.type is 'two' or this.type is 'lv2one' or this.type is 'lv2two' or this.type is 'lv2three' or this.type is 'lv2four' or this.type is 'lv2five'
             this.x -= this.speed
             this.y = this.waveSize * Math.sin(time) + this.constant
-        if this.life is 0
+        if this.life <= 0
             this.remove = true
         if this.type is 'one' and this.y < -10
             this.remove = true
@@ -336,6 +485,44 @@ game.enemy = (enemy) ->
         game.ctx.drawImage this.image, this.x, this.y
         return
     return
+#提示 能量不足
+game.hint = (x,y) ->
+    this.x = x
+    this.y = y
+    this.opa = 1
+    this.remove = false
+    this.update = ->
+        this.y -= 2
+        this.opa -= 0.05
+        if this.x <= 0 or this.opa <= 0
+            this.remove = true
+        return
+    this.render = ->
+        game.Draw.text '能量不足..', this.x, this.y, 1, "rgba(255,255,255,#{this.opa})"
+        return
+    return
+#护盾 能量 补给
+game.shieldSupply = (x,y) ->
+    this.x = x
+    this.y = y
+    this.dir = if Math.random() * 2 > 1 then 1 else -1
+    this.vx = Math.random() * 4 * this.dir
+    this.vy = Math.random() * 7
+    this.remove = false
+    this.update = ->
+        this.x += this.vx
+        this.y += this.vy
+        this.vx *= 0.99
+        this.vy *= 0.99
+        this.vy -= 0.25
+        if this.y < 0
+            this.remove = true
+        return
+    this.render = ->
+        game.ctx.drawImage game.shieldSupplyImage, this.x, this.y
+        return
+
+    return
 #爆炸💥
 game.explode = (x,y) ->
     this.x = x
@@ -344,7 +531,7 @@ game.explode = (x,y) ->
     this.num = 0
     this.update = ->
         this.num++
-        if this.num % 3 == 0
+        if this.num % 4 == 0
             this.sx += 120
         if this.sx > 1080
             this.remove = true
@@ -354,9 +541,13 @@ game.explode = (x,y) ->
         return
     return
 # 碰撞检测  记得要改
-game.collide = (objA,objB)->
-    if objA.x > objB.x && objA.x < objB.x+objB.w && objA.y < objB.y+objB.h && objA.y > objB.y
-        return true
+game.collide = (objA,objB,revolve)->
+    if revolve
+        if objA.x > objB.x -  objB.w/2 and objA.x < objB.x - objB.w/2 +objB.w and objA.y < objB.y - objB.h/2 + objB.h and objA.y > objB.y - objB.h/2
+            return true
+    else
+        if objA.x > objB.x and objA.x < objB.x+objB.w and objA.y < objB.y+objB.h and objA.y > objB.y
+            return true
     return false
 #子弹
 game.bullet = (sx,sy,rot,g,t,img) ->
@@ -368,8 +559,8 @@ game.bullet = (sx,sy,rot,g,t,img) ->
     this.bimg = img
     this.remove = false
     this.update = ->
-        this.x += Math.cos(this.brot) * 10
-        this.y += Math.sin(this.brot) * 10
+        this.x += Math.cos(this.brot) * 15 #子弹速度加快点好看
+        this.y += Math.sin(this.brot) * 15
         this.remove = if this.x < 0 or this.x > 820 or this.y < 0 or this.y > 620 then true else false
         return
     this.render = ->
@@ -378,6 +569,220 @@ game.bullet = (sx,sy,rot,g,t,img) ->
         game.ctx.rotate this.brot
         game.ctx.drawImage this.bimg, this.bg, this.bt
         game.ctx.restore();
+        return
+    return
+#火球
+game.fireBall = ->
+    this.x = 830
+    this.w = 100
+    this.h = 69
+    this.y = Math.round(Math.random()*600+10)
+    this.speed = 5
+    this.num = 0
+    this.sx = 0
+    this.life = 8
+    this.remove = false
+    this.update = ->
+        this.num++
+        this.x -= this.speed
+        if this.num % 4 is 0
+            this.sx += 100
+            if this.sx is 700
+                this.sx = 0
+        if this.x < -10
+            this.remove = true
+        return
+    this.render = ->
+        game.ctx.drawImage game.fireBallImage, this.sx, 0, 100, 69, this.x, this.y, 100, 69
+        return
+    return
+#boss
+game.boss = ->
+    this.x = 850
+    this.w = 215
+    this.h = 245
+    this.y = 300
+    this.life = 100
+    this.speed = 0.2
+    this.jiaodu = -90
+    this.sss = 0
+    this.zhuan = false
+    this.sx = 880
+    this.time = 0
+    this.h = 245
+    this.ai = 'begin'
+    this.up = true
+    this.down = false
+    this.ballone = false
+    this.balltwo = false
+    this.xunhuanjiguang = 1
+    this.zidanthree = false
+    this.zidanfour = false
+    this.zidancishu = 0
+    this.update = ->
+        if this.life > 0
+            if this.x is 600
+                this.ai = 'go'
+            if this.ai is 'begin'
+                this.x--
+            if this.ai is 'go'
+                this.ballone = true
+                this.time++
+                if this.time >= 100
+                    this.x++
+                if this.x >= 650
+                    this.ai = 'goupdown'
+
+            if this.ai is 'goupdown'
+                this.time++
+                if this.time >= 100
+                    if this.up
+                        if this.time % 10 is 0
+                            this.sx += 220
+                        if this.sx >= 1760
+                            this.sx = 1760
+                        this.y -= 0.5
+                        if this.y <= 100
+                            this.xunhuanjiguang++
+                            this.up = false
+                            this.down = true
+                    if this.down
+                        if this.time % 10 is 0
+                            this.sx -= 220
+                        if this.sx <= 0
+                            this.sx = 0
+                        this.y += 0.5
+                        if this.y >= 500
+                            this.xunhuanjiguang++
+                            this.up = true
+                            this.down = false
+            if this.ballone
+                if this.xunhuanjiguang % 2 is 0
+                    game.jiguangpao.sx = 0
+                    this.balltwo = true
+                    this.ballone = false
+                    this.xunhuanjiguang = 1
+            if this.balltwo
+                if this.xunhuanjiguang % 2 is 0
+                    game.jiguangpao.sx = 0
+                    this.balltwo = false
+                    this.ballone = true
+                    this.xunhuanjiguang = 1
+        return
+    this.render = ->
+        game.ctx.save()
+        game.ctx.translate this.x, this.y
+        game.ctx.rotate this.jiaodu*Math.PI/180
+        game.ctx.drawImage game.bossImage, this.sx, 0, 215, 245, -110, -122.5, 215, 245
+        game. ctx.restore()
+        return
+    return
+game.jiguang =  ->
+    this.x = 700
+    this.y = 0
+    this.sx = 0
+    this.update = ->
+        this.y = game.bossOne.y
+        this.sx += 5
+        if this.sx >= 820
+            this.sx = 820
+        return
+    this.render = ->
+        game.ctx.save()
+        game.ctx.translate this.x, this.y
+        game.ctx.rotate 90*Math.PI/180
+        game.ctx.drawImage game.bossjiguangImage, 0, 0, 67, this.sx, -30, 0, 67, this.sx
+        game.ctx.restore()
+        return
+    return
+game.bossBall = (x,y,t) ->
+    this.x = x
+    this.y = y
+    this.w = 50
+    this.h = 50
+    this.t = t
+    this.remove = false
+    this.update = ->
+        this.x -= 3
+        this.y = this.y - this.t
+        if this.x <= -10
+            this.remove = true
+        return
+    this.render = ->
+        game.ctx.drawImage game.bossBallImage, 0, 0, 50, 50, this.x, this.y, 50, 50
+        return
+    return
+game.bossBallTwo = (x,y,r) ->
+    this.x = x
+    this.y = y
+    this.rad = r
+    this.w = 20
+    this.h = 21
+    this.remove = false
+    this.update = ->
+        this.x +=Math.cos( this.rad) * 5
+        this.y +=Math.sin( this.rad) * 5
+        if this.x <=-10
+            this.remove = true
+        if this.x >=830
+            this.remove = true
+        if this.y <=-10
+            this.remove = true
+        if this.y >=630
+            this.remove = true
+        return
+    this.render = ->
+        game.ctx.save()
+        game.ctx.translate this.x, this.y
+        game.ctx.rotate(this.rad*Math.PI/180)
+        game.ctx.drawImage game.bossBallImage_two, 0, 0, 20, 21, -10, -10.5, 20, 21
+        game.ctx.restore()
+        return
+    return
+#宝石加分
+game.gemsScores = (x,y,t) ->
+    this.t = t
+    this.x = x
+    this.y = y
+    this.dir = if Math.random() * 2 > 1 then 1 else -1
+    this.vx = Math.random() * 4 * this.dir
+    this.vy = Math.random() * 7
+    this.remove = false
+    this.update = ->
+        this.x += this.vx
+        this.y += this.vy
+        this.vx *= 0.99
+        this.vy *= 0.99
+        this.vy -= 0.25
+        if this.y < 0
+            this.remove = true;
+        return
+    this.render = ->
+        game.ctx.drawImage game.gemsScoresImage, 0+160*this.t, 0, 160, 30, this.x, this.y, 160, 30
+        return
+    return
+#技能
+game.sp = (x,y,num) ->
+    return
+
+#流星
+game.meteor = (x,y,opa,r,speed,col)->
+    this.x = x
+    this.y = y
+    this.opa = opa
+    this.r = r
+    this.speed = speed
+    this.remove = false
+    this.update = ->
+        this.x -= this.speed
+        if this.x < -10
+            this.remove = true
+        return
+    this.render = ->
+        if col is 'red'
+            game.Draw.circle this.x, this.y, this.r, "rgba(252,48,57,#{this.opa})"
+        else
+            game.Draw.circle this.x, this.y, this.r, "rgba(255,255,255,#{this.opa})"
         return
     return
 window.addEventListener 'load',game.init,false
