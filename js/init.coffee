@@ -1,4 +1,3 @@
-"use strict"
 #这是初始函数  加载图片 声音 绑定事件
 game.init  = ->
     game.lworld = "begin"
@@ -382,7 +381,7 @@ game.init  = ->
     #hero
     game.spaceShip = new game.hero game.shipImgX, game.shipImgY, 66, 66, 'initial'
 
-
+    #第二关 的模拟流星
     for m in [0..200]
         game.meteorArray.push new game.meteor Math.random()*820, Math.random()*620, 0.4, 0.5, 0.1, 'red'
     for m in [0..100]

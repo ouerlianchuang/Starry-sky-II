@@ -81,7 +81,7 @@ game =
     #enemy 敌人
     enemySpeed: 0 #速度
     enemyArray: []#敌机数组
-    nextEnemy: 40 #下一个敌机的倒计时
+    nextEnemy: 20 #下一个敌机的倒计时
     #explode 爆炸数组
     explodeArray: []
 
@@ -109,7 +109,7 @@ game =
     #boss
     bossOneDangerHintImageAllow : false
     bossOneAllow : false
-    bossOneHintTime : 400
+    bossOneHintTime : 200
     bossOneHintSpeed : 0
     bossOneBallArray : []
     bossOneBallNum : 0
@@ -131,7 +131,7 @@ game =
     # 无尽模式
     EndlessMode : false
 
-    meteorArray : [] # 流行数组
+    meteorArray : [] # 流星数组
 
 
 

@@ -1,4 +1,3 @@
-"use strict"
 #这是渲染函数 主要负责负责根据update 产生的数据 画出canvas上的元素
 game.render = ->
     game.Draw.clear();
@@ -11,6 +10,8 @@ game.render = ->
             game.ctx.drawImage game.buttonArray[i].image, 0, 0, game.buttonArray[i].w, game.buttonArray[i].h, game.buttonArray[i].x, game.buttonArray[i].y, game.buttonArray[i].w, game.buttonArray[i].h
 
     #需要修改方式
+    #世界状态的方式好low
+    #循环的 变量名 简直炸了
     ###if game.lworld is 'help'
     if game.lworld is 'author'
     if game.lworld is 'gogo'###

@@ -1,4 +1,3 @@
-"use strict"
 #这是 数据更新函数 主要用来接收并改变游戏中会变的一切数值
 game.update = ->
     game.target.x = game.mouseX
@@ -52,7 +51,7 @@ game.update = ->
                         game.nextEnemy = Math.random() * 120 + 40
             game.gameTimeIn = (new Date().getTime() - game.gameTime)/60000
             if game.energyValue > 0 and game.energyValue < 400
-                game.energyValue -= 0.4
+                game.energyValue -= 0.9
             else if game.energyValue >= 400
                 game.energyValue -= 0.8
             if  game.energyValue >= 200
@@ -158,7 +157,7 @@ game.update = ->
                                 ,130
                         game.bossOneBallArray[bb].remove = true
                         if game.shield
-                            game.energyValue -= 40
+                            game.energyValue -= 80
                         else
                             game.heroLife--
                         game.damage++
@@ -218,7 +217,7 @@ game.update = ->
                             ,130
                     game.fireBallArray[fir].remove = true
                     if game.shield
-                        game.energyValue -= 40
+                        game.energyValue -= 80
                     else
                         game.heroLife--
                     game.damage++
@@ -259,7 +258,7 @@ game.update = ->
                     for pr in [0..60]
                         game.particleArray.push new game.particle game.enemyArray[k].x, game.enemyArray[k].y, 2
                     if game.shield
-                        game.energyValue -= 40
+                        game.energyValue -= 80
                     else
                         game.heroLife--
                     game.damage++
