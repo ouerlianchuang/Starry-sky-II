@@ -1,4 +1,4 @@
-#这是初始函数  加载图片 声音 绑定事件
+# 这是初始函数  加载图片 声音 绑定事件
 game.init  = ->
     game.lworld = "begin"
     game.ratio = game.width/game.height
@@ -10,7 +10,7 @@ game.init  = ->
     game.canvas.height = game.height
     game.resize()
 
-    #声音加载
+    # 声音加载
     game.audioLoad [
         { 'name': 'buttonHoverMusic',    'audio' : 'button.wav',          'volume': 0.3}
         { 'name': 'beginMusic',          'audio' : 'begin2.ogg',          'volume': 0.1, 'cycle': true}
@@ -22,12 +22,12 @@ game.init  = ->
         { 'name': 'lvCollideMusic',      'audio' : 'lvzhuangji.wav', 'volue': 1}
     ]
 
-    #图片加载 （方式有待改变） 暂时准备放在另一个json文件里 分游戏阶段来加载图片
+    # 图片加载 （方式有待改变） 暂时准备放在另一个json文件里 分游戏阶段来加载图片
     game.imageLoad [
-        ['targetImage', 'target.png']   #瞄准图
+        ['targetImage', 'target.png']   # 瞄准图
         ['backgroundImage', 'login.jpg'] # 背景
         ['backgroundImage_help', 'bangzhu.jpg']
-        #首页button
+        # 首页button
         ['beginImage', 'begin.png']
         ['beginImage_hover', 'h_begin.png']
         ['setupImage', 'shezhi.png']
@@ -36,7 +36,7 @@ game.init  = ->
         ['helpImage_hover', 'h_bangzhu.png']
         ['authorImage', 'zhizuo.png']
         ['authorImage_hover', 'h_zhizuo.png']
-        #设置页button
+        # 设置页button
         ['voiceImage','shengyin.png']
         ['voiceOffImage','shenyinguanbi.png']
         ['voiceImage_hover', 'shengyinkaiqihover.png']
@@ -51,7 +51,7 @@ game.init  = ->
         ['backInImage_hover', 'fanhuicaidan.png']
         ['setup_window', 'tanchuang2.png']
 
-        #go页面
+        # go页面
         ['backgroundImage_go', 'backg.jpg']
         ['gameFrameImage', 'backg2.png']
         ['energyTankUpImage', 'nengliangcaoshang.png']
@@ -67,14 +67,14 @@ game.init  = ->
         ['heroImage_shield_one', 'feiji.png']
         ['heroImage_shield_two', 'hudun.png']
         ['flameImage', 'weiyan.png']
-        #分数
+        # 分数
         ['scoresImage', 'fenshuimg.png']
-        #enemy 敌人
+        # enemy 敌人
         ['enemyImage_one', 'diren1.png']
         ['enemyImage_two', 'diren2.png']
-        #explode 爆炸
+        # explode 爆炸
         ['explodeImage', 'baozha.png']
-        #bullet 子弹
+        # bullet 子弹
         ['bulletImage_one', '/bullet/1.png']
         ['bulletImage_two', '/bullet/2.png']
         ['bulletImage_three', '/bullet/1a.png']
@@ -82,32 +82,32 @@ game.init  = ->
         ['bulletImage_five', '/bullet/1c.png']
         ['bulletImage_six', '/bullet/4.png']
         ['bulletImage_seven', '/bullet/222.png']
-        #武器系统  weapons_system
+        # 武器系统  weapons_system
         ['weaponsSystemImage_frame', 'wuqixitong.png']
         ['weaponsSystemImage_button_one', 'qianghuaanniu1.png']
         ['weaponsSystemImage_button_two', 'qianghuaanniu2.png']
         ['weaponsSystemImage_open', 'qiyong2.png']
         ['weaponsSystemImage_close', 'qiyong1.png']
-        #暂停
+        # 暂停
         ['pasuseImage', 'zanting.png']
-        #血槽
+        # 血槽
         ['bloodGrooveImage_bottom', 'xuecaodi1.png']
         ['bloodGrooveImage_bottom_danger', 'xuecaodi2.png']
         ['bloodGrooveImage_hp', 'xuetiao1.png']
         ['bloodGrooveImage_hp_danger', 'xuetiao2.png']
         ['bloodGrooveImage_frame', 'xuecao1.png']
         ['bloodGrooveImage_frame_danger', 'xuecao2.png']
-        #血量过低危险状态
+        # 血量过低危险状态
         ['dangerImage', 'weixianzhuangtai.png']
-        #宝石['failureImage', 'shibai.png']
+        # 宝石['failureImage', 'shibai.png']
         ['gemsImage', 'baoshi.png']
         ['gemsScoresImage', 'jiafen.png']
-        #失败
+        # 失败
         ['failureImage', 'shibai.png']
         # 火球
         ['fireBallDangerHintImage', 'jinggao.png']
         ['fireBallImage', 'huoqiu.png']
-        #boss 警告
+        # boss 警告
         ['bossDangerHintImage_bottom', 'weixianjinggaodibu.png']
         ['bossDangerHintImage_frame', 'weixianjinggao.png']
         ['bossDangerHintImage_text', 'weixianjinggaozi.png']
@@ -116,16 +116,16 @@ game.init  = ->
         ['bossBallImage', '/bullet/boss1.png']
         ['bossBallImage_two', '/bullet/13.png']
         ['bossjiguangImage', '/bullet/14.png']
-        #护盾 能量 补给
+        # 护盾 能量 补给
         ['shieldSupplyImage', 'hudunbuji.png']
-        #胜利后的 等级  s a b c d
+        # 胜利后的 等级  s a b c d
         ['lvImage_bottom', 'dengji-pi.png']
         ['lvImage_mid', 'dengji-di.png']
         ['lvImage_lv', 'dengji.png']
-        #返回游戏和继续挑战
+        # 返回游戏和继续挑战
         ['backImage_die', 'fanhuicaidan.png']
         ['ContinueChallengeImage', 'jixutiaozhan.png']
-        #lv2
+        # lv2
         ['enemyImage_one_lv2', '/lv2/1.png']
         ['enemyImage_two_lv2', '/lv2/2.png']
         ['enemyImage_three_lv2', '/lv2/3.png']
@@ -138,7 +138,7 @@ game.init  = ->
         ['enemyImage_eight_lv2', '/lv2/Mech3.png']
         ['enemyImage_nine_lv2', '/lv2/Mech4.png']
         ]
-     #button数组  字面值有待修改 暂时想到 所有数据以后放在json
+    # button数组  字面值有待修改 暂时想到 所有数据以后放在json
     game.begin_button = [
         new game.button 565, 285, 172, 55, 'normal', game.beginImage, 'beginImage'
         new game.button 585, 350, 123, 39, 'normal', game.setupImage, 'setupImage'
@@ -160,7 +160,7 @@ game.init  = ->
     game.go_button = [
         new game.button 364, 405, 73, 24, 'normal', game.goBeginImage, 'goBeginImage'
     ]
-    #鼠标运动时禁止瞄准镜转动
+    # 鼠标运动时禁止瞄准镜转动
     document.onmousemove = (e) ->
         game.target.on_off = 'off'
         if timer
@@ -169,13 +169,13 @@ game.init  = ->
                     game.target.on_off = 'on'
                 , 500
         return
-    #首页button hover触发函数 (≧∇≦) 比以前少好多
+    # 首页button hover触发函数 (≧∇≦) 比以前少好多
     game.buttonHover_begin = (e) ->
         e.preventDefault()
         x = game.mouseX
         y = game.mouseY
         for i in [0..game.buttonArray.length-1]
-            if game.buttonArray[i].music is true #修复声音重复触发
+            if game.buttonArray[i].music is true # 修复声音重复触发
                 if game.buttonArray[i].musicNum <= 1
                     game.audio.buttonHoverMusic.load()
                     game.audio.buttonHoverMusic.play()
@@ -188,7 +188,7 @@ game.init  = ->
                 game.buttonArray[i].music = false
                 game.buttonArray[i].musicNum = 0
         return
-    #go世界状态button 点击触发函数
+    # go世界状态button 点击触发函数
     game.buttonUp_go = (e) ->
         e.preventDefault()
         x = game.mouseX
@@ -206,14 +206,14 @@ game.init  = ->
                 window.addEventListener 'keyup', game.directionKeyUp
 
 
-    #首页button 点击触发函数
+    # 首页button 点击触发函数
     game.buttonUp_begin = (e) ->
         e.preventDefault()
         x = game.mouseX
         y = game.mouseY
         for i in [0..game.buttonArray.length-1]
             if x > game.buttonArray[i].x and x <  game.buttonArray[i].x +  game.buttonArray[i].w and  y >  game.buttonArray[i].y and y <  game.buttonArray[i].y + game.buttonArray[i].h
-                game.lworld = game.buttonArray[i].name.split('I')[0]  #改变世界状态
+                game.lworld = game.buttonArray[i].name.split('I')[0]  # 改变世界状态
                 if game.lworld isnt "begin"
                     window.removeEventListener 'mouseup', game.buttonUp_begin
                 else
@@ -224,7 +224,7 @@ game.init  = ->
                     game.audio.middleMusic.play()
                     window.removeEventListener 'mouseup', game.buttonUp_begin
                     window.addEventListener 'mouseup', game.buttonUp_go
-                    game.buttonArray = game.go_button #加上这句 会报本函数中 x undefined
+                    game.buttonArray = game.go_button # 加上这句 会报本函数中 x undefined
 
                 if game.lworld is 'setup'
                     window.addEventListener 'mouseup', game.buttonUp_setup
@@ -239,7 +239,7 @@ game.init  = ->
                     game.backgroundImage.src = './image/tuandui.jpg'
                     game.buttonArray = game.author_button
         return
-    #设置页button 点击触发函数
+    # 设置页button 点击触发函数
     game.buttonUp_setup  = (e) ->
         e.preventDefault()
         x = game.mouseX
@@ -264,7 +264,7 @@ game.init  = ->
                 when 68 then game.rightkey = true
                 else return
 
-    game.directionKeyUp = (e) ->   #关闭 方向移动 允许
+    game.directionKeyUp = (e) ->   # 关闭 方向移动 允许
         if  game.lworld is "gogo"
             switch e.keyCode
                 when 87 then game.upkey = false
@@ -278,10 +278,10 @@ game.init  = ->
                         game.audio.weaponssSystemMusic.play()
                 else return
 
-    game.bulletGo =(x,y) -> #点击发射子弹
+    game.bulletGo =(x,y) -> # 点击发射子弹
         game.bulletTime++
         game.audio.bullteMusic.play()
-        switch game.bulletStyle #子弹类型判断
+        switch game.bulletStyle # 子弹类型判断
             when 1 then if game.bulletTime % 5 is 0
                 game.bulletPower = 1
                 game.ammoUse++
@@ -326,10 +326,10 @@ game.init  = ->
                     game.audioVolumeswitch('off')
                     game.setup_button[0].image = game.voiceOffImage
                     game.setup_button[0].name =  'voiceOffImage'
-        if game.lworld is 'gogo'  #如果世界状态   gogo  可以发射子弹
-            game.audio.bullteMusic.load()  #声音
-            game.bulletTime = 0  #子弹时间
-            window.cancelAnimationFrame game.bulletAllow #子弹push结束
+        if game.lworld is 'gogo'  # 如果世界状态   gogo  可以发射子弹
+            game.audio.bullteMusic.load()  # 声音
+            game.bulletTime = 0  # 子弹时间
+            window.cancelAnimationFrame game.bulletAllow # 子弹push结束
             game.bulletAllow = null
             if game.failure
                 if game.mouseX > 500 and game.mouseY > 375 and game.mouseX < 600 and game.mouseY < 395
@@ -359,10 +359,10 @@ game.init  = ->
         e.preventDefault()
         if game.pause then game.pause = false else game.pause = true
         return false
-    #屏蔽声音 后期加入设置
+    # 屏蔽声音 后期加入设置
     game.audioVolumeswitch('on')
 
-    #鼠标位置获取 同时
+    # 鼠标位置获取 同时
     window.addEventListener 'mousemove', (e) ->
         game.mousePosition.set(e)
         game.mouseX = game.mousePosition.x/game.scale
@@ -375,13 +375,13 @@ game.init  = ->
 
     game.buttonArray = game.begin_button
 
-    #瞄准镜
+    # 瞄准镜
     game.target = new game.targetFn game.mouseX, game.mouseY
 
-    #hero
+    # hero
     game.spaceShip = new game.hero game.shipImgX, game.shipImgY, 66, 66, 'initial'
 
-    #第二关 的模拟流星
+    # 第二关 的模拟流星
     for m in [0..200]
         game.meteorArray.push new game.meteor Math.random()*820, Math.random()*620, 0.4, 0.5, 0.1, 'red'
     for m in [0..100]
@@ -402,16 +402,13 @@ game.init  = ->
         game.meteorArray.push new game.meteor Math.random()*820, Math.random()*620, 0.6, 3, 4,
 
 
-    #雷达n
+    # 雷达n
     game.radar = new game.hero 61, 576, 50, 50, 'radar'
-    #boss
+    # boss
     game.bossOne = new game.boss()
     game.jiguangpao = new game.jiguang()
-    #flame
+    # flame
     game.shipFlame = new game.flame()
     game.audio.beginMusic.play()
-    #执行循环函数
+    # 执行循环函数
     game.loop()
-
-
-
